@@ -21,19 +21,11 @@ class Scraper:
 		
 		try:
 			channel = await self.client.get_entity(channel_link)
-			
-			messages = await self.client(GetHistoryRequest(
-				peer=channel,
-				limit=count,
-				offset_date=None,
-				offset_id=0,
-				max_id=0,
-				min_id=0,
-				add_offset=0,
-				hash=0
-			))
-			
-			return messages.messages
+
+			results = []
+			async for message in self.client.iter_messages(channel, limit=count):
+				results.append(message)
+			return results
 			
 		except Exception as e:
 			print(f"Error getting messages: {str(e)}")
