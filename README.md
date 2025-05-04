@@ -19,13 +19,20 @@ pip install .
 ## Пример использования
 
 ```python
-from lib_telegram_scrap.scrapper import Scrapper 
+from lib_telegram_scrap.scrapper import Scraper
+import asyncio
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+API_ID = config['Telegram']['api_id']
+API_HASH = config['Telegram']['api_hash']
+COUNT_LAST_MESSAGES = config['Channel']['count_last_messages']
+URL_CHANNEL = config['Channel']['url']
 
 async def main():
-	scraper = TelegramScraper(api_id=YOUR_API_ID, api_hash='YOUR_API_HASH')
-	
-	COUNT_LAST_MESSAGES = 50
-	URL_CHANNEL = "https://t.me/channel_name"
+	scraper = Scraper(api_id=API_ID, api_hash=API_HASH)
 
 	messages = await scraper.get_last_messages(URL_CHANNEL, COUNT_LAST_MESSAGES)
 	
